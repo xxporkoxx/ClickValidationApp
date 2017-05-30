@@ -1,0 +1,99 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="com.example.diegomello.clickvalidationapp.FullscreenActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/fullscreen_content"
+        android:background="@color/deviceColor"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/led_circle_shape"
+            android:id="@+id/green_led"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/emergency_button"
+            android:text="@string/emergency_text_string"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/button_top_margin"
+            android:padding="@dimen/button_padding"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bathroom_button"
+            android:text="@string/bathroom_text_string"
+            android:drawableRight="@drawable/ic_bathroom_36dp"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:layout_marginTop="@dimen/button_top_margin"
+            android:padding="@dimen/button_padding"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/assistence_button"
+            android:text="@string/assistence_text_string"
+            android:drawableRight="@drawable/ic_assistence_36dp"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:layout_marginTop="@dimen/button_top_margin"
+            android:padding="@dimen/button_padding"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/thirsty_button"
+            android:text="@string/thirsty_text_string"
+            android:drawableRight="@drawable/ic_thirsty_36dp"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:layout_marginTop="@dimen/button_top_margin"
+            android:padding="@dimen/button_padding"
+            />
+    </LinearLayout>
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <Button
+                android:id="@+id/config_button"
+                style="?metaButtonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/config_button" />
+
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>
