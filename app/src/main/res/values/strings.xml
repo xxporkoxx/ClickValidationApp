@@ -11,4 +11,6 @@
     <string name="thirsty_text_string">SEDE</string>
     
     <string name="select_paciente_label">Selecione uma Pessoa</string>
+
+    <string name="select_patient_sucesfull_toast_text">foi selecionado com sucesso!</string>
 </resources>

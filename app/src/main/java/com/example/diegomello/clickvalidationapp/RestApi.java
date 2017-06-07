@@ -12,4 +12,7 @@ import retrofit2.http.GET;
 public interface RestApi {
     @GET("/patients")
     Call<ArrayList<Patient>> getPatientsFromApi();
+
+    @GET("/caretakers")
+    Call<ArrayList<Caretaker>> getCareTakersFromApi();
 }

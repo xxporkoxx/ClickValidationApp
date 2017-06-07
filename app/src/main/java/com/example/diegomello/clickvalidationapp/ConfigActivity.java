@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class ConfigActivity extends AppCompatActivity {
     private RestApiAdapter mRestApiAdapter;
     private Callback<List<Patient>> mPatientList;
 
+    private ProgressBar mProgressBar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,9 @@ public class ConfigActivity extends AppCompatActivity {
         mContext = (ConfigActivity)this;
 
         mListView = (ListView) findViewById(R.id.activity_config_listView);
+        mProgressBar = (ProgressBar) findViewById(R.id.activity_config_progressBar);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+
         mRestApiAdapter =  new RestApiAdapter();
 
         retriveModelsFromAPI();
@@ -58,36 +65,33 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void retriveModelsFromAPI(){
-        mRestApiAdapter.testRestApi(new Callback<ArrayList<Patient>>() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRestApiAdapter.getPatientsRestApi(new Callback<ArrayList<Patient>>() {
             @Override
             public void onResponse(Call<ArrayList<Patient>> call, Response<ArrayList<Patient>> response) {
                 // response.isSuccessful() is true if the response code is 2xx
                 if (response.isSuccessful()) {
-                    Log.d("RESPONSE","REsposta");
-                    ArrayList<Patient> patients = response.body();
+                    final ArrayList<Patient> patients = response.body();
 
-                    mListView.setAdapter(new PatientAdapter(mContext,patients));
+                    mRestApiAdapter.getCaretakersRestApi(new Callback<ArrayList<Caretaker>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<Caretaker>> call, Response<ArrayList<Caretaker>> response) {
+                                if (response.isSuccessful()) {
+                                    ArrayList<Caretaker> caretakers = response.body();
 
+                                    Log.d("RESPONSE","REsposta");
+                                    mProgressBar.setVisibility(View.INVISIBLE);
 
-                    /*Patient data = response.body();
-                    Log.d(TAG, "Async success: Weather: Name:" + data.getName() + ", cod:" + data.getCod()
-                            + ",Coord: (" + data.getLat() + "," + data.getLon()
-                            + "), Temp:" + data.getTemp()
-                            + "\nSunset:" + data.getSunset() + ", " + data.getSunrise()
-                            + ", Country:" + data.getCountry());
-                    mData = data;
-                    if (mActivityRef.get() != null) {
-                        mActivityRef.get().updateUXWithWeather(mData);
-                        mActivityRef.get().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mActivityRef.get().mProgressBar = (ProgressBar) mActivityRef.get().
-                                        findViewById(R.id.progress_bar_id);
-                                mActivityRef.get().mProgressBar.setVisibility(View.INVISIBLE);
+                                    mListView.setAdapter(new PatientAdapter(mContext,patients,caretakers));
+                                }
                             }
-                        });
-                    }
-                    mInProgress.set(false);*/
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Caretaker>> call, Throwable t) {
+
+                        }
+                    });
+
                 } else {
                     int statusCode = response.code();
 

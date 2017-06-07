@@ -53,8 +53,13 @@ public class RestApiAdapter {
 
     }
 
-    public void testRestApi(Callback<ArrayList<Patient>> callback){
+    public void getPatientsRestApi(Callback<ArrayList<Patient>> callback){
         //Log.d(TAG, "testWeatherApi: for city:");
         mRestApi.getPatientsFromApi().enqueue(callback);
+    }
+
+    public void getCaretakersRestApi(Callback<ArrayList<Caretaker>> callback){
+        //Log.d(TAG, "testWeatherApi: for city:");
+        mRestApi.getCareTakersFromApi().enqueue(callback);
     }
 }

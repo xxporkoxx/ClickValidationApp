@@ -61,7 +61,15 @@ public class Patient {
     }
     public boolean isCaretakersArrayEmpty(){
         if(caretakers.size()>0)
-            return true;
-        return false;
+            return false;
+        return true;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 }

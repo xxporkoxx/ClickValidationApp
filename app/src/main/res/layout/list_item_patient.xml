@@ -49,10 +49,16 @@
                     android:textSize="18sp"
                     android:textStyle="bold"/>
                 <TextView
-                    android:id="@+id/list_item_info_textView"
+                    android:id="@+id/list_item_age_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Idade: 50 / Cuidador: João"
+                    android:text="Idade: 50"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:id="@+id/list_item_first_caretaker_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cuidador: João"
                     android:textSize="16sp"/>
             </LinearLayout>
         </LinearLayout>
