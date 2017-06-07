@@ -9,4 +9,6 @@
     <string name="bathroom_text_string">W.C.</string>
     <string name="assistence_text_string">Auxílio</string>
     <string name="thirsty_text_string">SEDE</string>
+    
+    <string name="select_paciente_label">Selecione uma Pessoa</string>
 </resources>

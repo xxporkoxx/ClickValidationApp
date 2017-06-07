@@ -3,4 +3,5 @@
 
     <dimen name="button_top_margin">20dp</dimen>
     <dimen name="button_padding">20dp</dimen>
+    <dimen name="list_item_call_padding">3dp</dimen>
 </resources>
