@@ -45,23 +45,9 @@ public class ConfigActivity extends AppCompatActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.activity_config_progressBar);
         mProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
 
-        mRestApiAdapter =  new RestApiAdapter();
+        mRestApiAdapter =  RestApiAdapter.getInstance();
 
         retriveModelsFromAPI();
-/*
-        List<String> testecuidador = new ArrayList<String>();
-        List<String> testecalls = new ArrayList<String>();
-
-        testecuidador.add("Cuidador 1");
-        testecuidador.add("Cuidador 2");
-
-
-        mPatientArrayList = new ArrayList<>();
-        mPatientArrayList.add(new Patient("Paciente 1",50,'M',"Probleminha",2,testecuidador,testecalls));
-        mPatientArrayList.add(new Patient("Paciente 2",30,'F',"Artrite",1,testecuidador,testecalls));
-        mPatientArrayList.add(new Patient("Paciente 3",40,'M',"Artrose",3,testecuidador,testecalls));
-        mPatientArrayList.add(new Patient("Paciente 4",70,'F',"Outra coisa ae",1,testecuidador,testecalls));
-*/
     }
 
     private void retriveModelsFromAPI(){

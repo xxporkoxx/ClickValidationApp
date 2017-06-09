@@ -23,10 +23,16 @@ public class RestApiAdapter {
     static final String BASE_URL ="https://clickvalidationbackend.herokuapp.com";
     static final String OPEN_WEATHER_API = "51337ba29f38cb7a5664cda04d84f4cd";
 
+    private static RestApiAdapter mRestApiAdapter = new RestApiAdapter( );
+
     private static RestApi mRestApi;
 
-    RestApiAdapter(){
+    private RestApiAdapter(){
         InstanciateRestApiAdapter();
+    }
+
+    public static RestApiAdapter getInstance(){
+        return mRestApiAdapter;
     }
 
     public static RestApi InstanciateRestApiAdapter() {
@@ -54,12 +60,15 @@ public class RestApiAdapter {
     }
 
     public void getPatientsRestApi(Callback<ArrayList<Patient>> callback){
-        //Log.d(TAG, "testWeatherApi: for city:");
         mRestApi.getPatientsFromApi().enqueue(callback);
     }
 
     public void getCaretakersRestApi(Callback<ArrayList<Caretaker>> callback){
-        //Log.d(TAG, "testWeatherApi: for city:");
         mRestApi.getCareTakersFromApi().enqueue(callback);
+    }
+
+    public void postCreateCallRestApi(Callback<Patient> callback,Integer calltype,
+                                      Integer callstatus,String patientid){
+        mRestApi.postCreateCall(calltype,callstatus,patientid).enqueue(callback);
     }
 }

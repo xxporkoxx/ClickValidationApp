@@ -14,6 +14,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.diegomello.clickvalidationapp.utils.Constants;
+import com.example.diegomello.clickvalidationapp.utils.Utils;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -104,6 +112,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen);
 
+        Utils.setContext(this);
+
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
@@ -153,16 +163,59 @@ public class FullscreenActivity extends AppCompatActivity {
         mAssistenceButton.getBackground().setColorFilter(0xFFFFEB3B, PorterDuff.Mode.MULTIPLY);
         mThirstyButton.getBackground().setColorFilter(0xFF2196F3, PorterDuff.Mode.MULTIPLY);
 
-        final MediaPlayer player = MediaPlayer.create(this, R.raw.buttonclick);
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.tween);
-
-
         mEmergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                animate(player,animation);
+                callServiceButtonPushed(Constants.EMERGENCY_CALL_NUMBER,Constants.CALL_STATUS_ON_THE_WAY);
             }
         });
+
+        mBathroomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callServiceButtonPushed(Constants.BATHROOM_CALL_NUMBER,Constants.CALL_STATUS_ON_THE_WAY);
+            }
+        });
+
+        mAssistenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callServiceButtonPushed(Constants.DISCOMFORT_CALL_NUMBER,Constants.CALL_STATUS_ON_THE_WAY);
+
+            }
+        });
+
+        mThirstyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callServiceButtonPushed(Constants.WATER_CALL_NUMBER,Constants.CALL_STATUS_ON_THE_WAY);
+            }
+        });
+    }
+
+    private void callServiceButtonPushed(Integer callTypeInteger,Integer callStatusInteger){
+        final MediaPlayer player = MediaPlayer.create(this, R.raw.buttonclick);
+        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.tween);
+
+        if(Utils.isNetworkConnected()){
+            Patient p = Utils.checkForDeviceIdentification();
+            if(p!=null){
+                animate(player,animation);
+                RestApiAdapter.getInstance().postCreateCallRestApi(new Callback<Patient>() {
+                    @Override
+                    public void onResponse(Call<Patient> call, Response<Patient> response) {
+                        
+                    }
+
+                    @Override
+                    public void onFailure(Call<Patient> call, Throwable t) {
+
+                    }
+                },callTypeInteger,callStatusInteger,p.get_id());
+            }
+        }
+        else
+            Toast.makeText(Utils.mContext,"Sem conexão com a INTERNET",Toast.LENGTH_LONG).show();
 
     }
 
