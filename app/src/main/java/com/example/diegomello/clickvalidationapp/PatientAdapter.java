@@ -1,7 +1,6 @@
 package com.example.diegomello.clickvalidationapp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.diegomello.clickvalidationapp.utils.Constants;
-import com.google.gson.Gson;
+import com.example.diegomello.clickvalidationapp.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,12 +69,10 @@ public class PatientAdapter extends ArrayAdapter <Patient> {
         mViewHolder.patientSlectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences settings = mContext.getSharedPreferences(Constants.PATIENT_SHARED_PREF, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString(Constants.PATIENT_SHARED_PREF_JSON_OBJECT, new Gson().toJson(p));
-                editor.commit();
-
-                Toast.makeText(mContext, p.getName()+" "+mContext.getResources().getString(R.string.select_patient_sucesfull_toast_text),Toast.LENGTH_LONG).show();
+                if(Utils.savePatientOnChash(p))
+                    Toast.makeText(mContext, p.getName()+" "+mContext.getResources().getString(R.string.select_patient_sucesfull_toast_text),Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(mContext, mContext.getResources().getString(R.string.select_patient_error_toast_text)+" "+p.getName(),Toast.LENGTH_LONG).show();
             }
         });
 

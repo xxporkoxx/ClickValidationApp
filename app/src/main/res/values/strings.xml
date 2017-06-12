@@ -13,4 +13,6 @@
     <string name="select_paciente_label">Selecione uma Pessoa</string>
 
     <string name="select_patient_sucesfull_toast_text">foi selecionado com sucesso!</string>
+    <string name="select_patient_error_toast_text">falha ao selecionar o paciente </string>
+
 </resources>

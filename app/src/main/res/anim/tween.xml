@@ -5,5 +5,5 @@
         android:toAlpha="1"
         android:duration="300"
         android:repeatMode="reverse"
-        android:repeatCount="10" />
+        android:repeatCount="infinite" />
 </set>

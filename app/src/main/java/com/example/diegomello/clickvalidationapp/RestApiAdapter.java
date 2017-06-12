@@ -7,8 +7,6 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestApiAdapter {
     protected static final String TAG = "RESTAPIADAPTER";
     protected static Retrofit mRestAdapter;
-    static final String BASE_URL ="https://clickvalidationbackend.herokuapp.com";
+    static final String BASE_URL ="https://clickvalidationbackend.herokuapp.com/";
     static final String OPEN_WEATHER_API = "51337ba29f38cb7a5664cda04d84f4cd";
 
     private static RestApiAdapter mRestApiAdapter = new RestApiAdapter( );
@@ -42,13 +40,13 @@ public class RestApiAdapter {
                     .create();
 
             // Add logging into retrofit 2.0
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+           /* HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.interceptors().add(logging);
-
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logging).build();
+*/
             mRestAdapter = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+ //                   .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
             mRestApi = mRestAdapter.create(RestApi.class); // create the interface
@@ -70,5 +68,10 @@ public class RestApiAdapter {
     public void postCreateCallRestApi(Callback<Patient> callback,Integer calltype,
                                       Integer callstatus,String patientid){
         mRestApi.postCreateCall(calltype,callstatus,patientid).enqueue(callback);
+    }
+
+    public void putSolveCallRestApi(Callback<Calling> callback, Integer calltype,
+                                    Integer callstatus, String callId){
+        mRestApi.putSolveCall(calltype,callstatus,callId).enqueue(callback);
     }
 }

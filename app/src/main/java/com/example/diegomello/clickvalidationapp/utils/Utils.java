@@ -1,6 +1,7 @@
 package com.example.diegomello.clickvalidationapp.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
@@ -38,4 +39,12 @@ public class Utils {
         }
         return patient;
     }
+
+    public static boolean savePatientOnChash(Patient p){
+        SharedPreferences settings = mContext.getSharedPreferences(Constants.PATIENT_SHARED_PREF, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(Constants.PATIENT_SHARED_PREF_JSON_OBJECT, new Gson().toJson(p));
+        return editor.commit();
+    }
+
 }

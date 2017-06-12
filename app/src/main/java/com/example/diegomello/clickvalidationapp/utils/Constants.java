@@ -14,6 +14,7 @@ public class Constants {
     public static final Integer CALL_STATUS_ON_THE_WAY = 2;     //2 : Someone is o the way
     public static final Integer CALL_STATUS_SERVED = 3;     //3 : already served
 
+    public static Integer Ok_CALL_NUMBER = 0;
     public static Integer EMERGENCY_CALL_NUMBER = 1;
     public static Integer BATHROOM_CALL_NUMBER = 2;
     public static Integer DISCOMFORT_CALL_NUMBER = 3;

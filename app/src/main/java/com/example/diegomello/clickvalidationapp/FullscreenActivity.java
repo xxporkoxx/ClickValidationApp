@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -52,8 +53,14 @@ public class FullscreenActivity extends AppCompatActivity {
     Button mEmergencyButton;
     Button mAssistenceButton;
     Button mThirstyButton;
+    Button mOkButton;
 
     ImageView mGreenLed;
+
+    Animation mLedAnime;
+    MediaPlayer mButtonSoundPlayer;
+
+    boolean mCallOntheWay;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -114,10 +121,13 @@ public class FullscreenActivity extends AppCompatActivity {
 
         Utils.setContext(this);
 
+        mCallOntheWay = false;
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
+        mButtonSoundPlayer = MediaPlayer.create(this, R.raw.buttonclick);
+        mLedAnime = AnimationUtils.loadAnimation(this, R.anim.tween);
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -157,6 +167,7 @@ public class FullscreenActivity extends AppCompatActivity {
         mBathroomButton = (Button) mContentView.findViewById(R.id.bathroom_button);
         mAssistenceButton = (Button) mContentView.findViewById(R.id.assistence_button);
         mThirstyButton = (Button) mContentView.findViewById(R.id.thirsty_button);
+        mOkButton = (Button) mContentView.findViewById(R.id.activity_fullscreen_ok_button);
         mGreenLed = (ImageView) mContentView.findViewById(R.id.green_led);
         mBathroomButton.getBackground().setColorFilter(0xFF4CAF50, PorterDuff.Mode.MULTIPLY);
         mEmergencyButton.getBackground().setColorFilter(0xFFF2372A, PorterDuff.Mode.MULTIPLY);
@@ -191,37 +202,67 @@ public class FullscreenActivity extends AppCompatActivity {
                 callServiceButtonPushed(Constants.WATER_CALL_NUMBER,Constants.CALL_STATUS_ON_THE_WAY);
             }
         });
+        mOkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callServiceButtonPushed(Constants.Ok_CALL_NUMBER,Constants.CALL_STATUS_SERVED);
+            }
+        });
     }
 
     private void callServiceButtonPushed(Integer callTypeInteger,Integer callStatusInteger){
-        final MediaPlayer player = MediaPlayer.create(this, R.raw.buttonclick);
-        final Animation animation = AnimationUtils.loadAnimation(this, R.anim.tween);
 
         if(Utils.isNetworkConnected()){
             Patient p = Utils.checkForDeviceIdentification();
             if(p!=null){
-                animate(player,animation);
-                RestApiAdapter.getInstance().postCreateCallRestApi(new Callback<Patient>() {
-                    @Override
-                    public void onResponse(Call<Patient> call, Response<Patient> response) {
-                        
-                    }
+                if(callTypeInteger == Constants.Ok_CALL_NUMBER){
+                    mGreenLed.clearAnimation();
+                    mCallOntheWay = false;
+                    String call_id = p.getCalls().get(p.getCalls().size()-1);
+                    if(call_id!=null){
+                        RestApiAdapter.getInstance().putSolveCallRestApi(new Callback<Calling>() {
+                            @Override
+                            public void onResponse(Call<Calling> call, Response<Calling> response) {
+                                Toast.makeText(Utils.mContext,"DEU CERTO CHAMADA ATLZD",Toast.LENGTH_SHORT).show();
+                                Log.d("OKBUTTONPRESSED",call.toString());
+                                Log.d("RESPONSE",response.toString());
+                            }
 
-                    @Override
-                    public void onFailure(Call<Patient> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<Calling> call, Throwable t) {
+
+                            }
+                        },callTypeInteger,callStatusInteger,call_id);
+                    }else{
 
                     }
-                },callTypeInteger,callStatusInteger,p.get_id());
+                }else{
+                    if(!mCallOntheWay) {
+                        mCallOntheWay = true;
+                        mButtonSoundPlayer.start();
+                        mGreenLed.startAnimation(mLedAnime);
+
+                        RestApiAdapter.getInstance().postCreateCallRestApi(new Callback<Patient>() {
+                            @Override
+                            public void onResponse(Call<Patient> call, Response<Patient> response) {
+                                Utils.savePatientOnChash(response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call<Patient> call, Throwable t) {
+
+                            }
+                        }, callTypeInteger, callStatusInteger, p.get_id());
+                    }
+                }
             }
         }
         else
             Toast.makeText(Utils.mContext,"Sem conexão com a INTERNET",Toast.LENGTH_LONG).show();
-
     }
 
     void animate(final MediaPlayer player, final Animation animation){
-        player.start();
-        mGreenLed.startAnimation(animation);
+
     }
 
     private void toggle() {

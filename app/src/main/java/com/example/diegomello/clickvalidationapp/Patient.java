@@ -72,4 +72,12 @@ public class Patient {
     public void set_id(String _id) {
         this._id = _id;
     }
+
+    public List<String> getCalls() {
+        return calls;
+    }
+
+    public void setCalls(List<String> calls) {
+        this.calls = calls;
+    }
 }

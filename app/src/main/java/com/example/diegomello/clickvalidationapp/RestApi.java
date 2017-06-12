@@ -13,15 +13,21 @@ import retrofit2.http.POST;
  */
 
 public interface RestApi {
-    @GET("/patients")
+    @GET("patients/")
     Call<ArrayList<Patient>> getPatientsFromApi();
 
-    @GET("/caretakers")
+    @GET("caretakers/")
     Call<ArrayList<Caretaker>> getCareTakersFromApi();
 
-    @POST("/calls")
+    @POST("calls/")
     @FormUrlEncoded
     Call<Patient> postCreateCall(@Field("calltype") Integer calltype,
                                  @Field("callstatus") Integer callstatus,
                                  @Field("patientid") String patientid);
+
+    @POST("solvecall/")
+    @FormUrlEncoded
+    Call<Calling> putSolveCall(@Field("calltype") Integer calltype,
+                                 @Field("callstatus") Integer callstatus,
+                                 @Field("callid") String callId);
 }
