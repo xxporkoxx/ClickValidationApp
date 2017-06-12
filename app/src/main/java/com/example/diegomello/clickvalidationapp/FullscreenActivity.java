@@ -24,6 +24,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.View.GONE;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -58,7 +60,9 @@ public class FullscreenActivity extends AppCompatActivity {
     ImageView mGreenLed;
 
     Animation mLedAnime;
-    MediaPlayer mButtonSoundPlayer;
+    MediaPlayer mNecessityButtonSound;
+    MediaPlayer mOkButtonSound;
+    MediaPlayer mBlinkWaitingAtendenceSound;
 
     boolean mCallOntheWay;
 
@@ -126,7 +130,9 @@ public class FullscreenActivity extends AppCompatActivity {
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
-        mButtonSoundPlayer = MediaPlayer.create(this, R.raw.buttonclick);
+        mNecessityButtonSound = MediaPlayer.create(this, R.raw.ok_button_sound);
+        mOkButtonSound = MediaPlayer.create(this, R.raw.necesity_button_sound);
+
         mLedAnime = AnimationUtils.loadAnimation(this, R.anim.tween);
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -217,12 +223,15 @@ public class FullscreenActivity extends AppCompatActivity {
             if(p!=null){
                 if(callTypeInteger == Constants.Ok_CALL_NUMBER){
                     mGreenLed.clearAnimation();
+                    mOkButtonSound.start();
                     mCallOntheWay = false;
                     String call_id = p.getCalls().get(p.getCalls().size()-1);
                     if(call_id!=null){
                         RestApiAdapter.getInstance().putSolveCallRestApi(new Callback<Calling>() {
                             @Override
                             public void onResponse(Call<Calling> call, Response<Calling> response) {
+                                mOkButton.setVisibility(View.GONE);
+
                                 Toast.makeText(Utils.mContext,"DEU CERTO CHAMADA ATLZD",Toast.LENGTH_SHORT).show();
                                 Log.d("OKBUTTONPRESSED",call.toString());
                                 Log.d("RESPONSE",response.toString());
@@ -239,8 +248,9 @@ public class FullscreenActivity extends AppCompatActivity {
                 }else{
                     if(!mCallOntheWay) {
                         mCallOntheWay = true;
-                        mButtonSoundPlayer.start();
+                        mNecessityButtonSound.start();
                         mGreenLed.startAnimation(mLedAnime);
+                        mOkButton.setVisibility(View.VISIBLE);
 
                         RestApiAdapter.getInstance().postCreateCallRestApi(new Callback<Patient>() {
                             @Override
@@ -279,7 +289,7 @@ public class FullscreenActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
+        mControlsView.setVisibility(GONE);
         mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
