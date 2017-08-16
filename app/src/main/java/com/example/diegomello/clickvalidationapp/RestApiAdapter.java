@@ -2,6 +2,7 @@ package com.example.diegomello.clickvalidationapp;
 
 import android.util.Log;
 
+import com.example.diegomello.clickvalidationapp.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,8 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestApiAdapter {
     protected static final String TAG = "RESTAPIADAPTER";
     protected static Retrofit mRestAdapter;
-    static final String BASE_URL ="https://clickvalidationbackend.herokuapp.com/";
-    static final String OPEN_WEATHER_API = "51337ba29f38cb7a5664cda04d84f4cd";
+    //static final String OPEN_WEATHER_API = "51337ba29f38cb7a5664cda04d84f4cd";
 
     private static RestApiAdapter mRestApiAdapter = new RestApiAdapter( );
 
@@ -45,7 +45,7 @@ public class RestApiAdapter {
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(logging).build();
 */
             mRestAdapter = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Constants.BASE_URL)
  //                   .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
@@ -71,7 +71,7 @@ public class RestApiAdapter {
     }
 
     public void putSolveCallRestApi(Callback<Calling> callback, Integer calltype,
-                                    Integer callstatus, String callId){
-        mRestApi.putSolveCall(calltype,callstatus,callId).enqueue(callback);
+                                    Integer callstatus, String callId, String patient_id){
+        mRestApi.putSolveCall(calltype,callstatus,callId,patient_id).enqueue(callback);
     }
 }

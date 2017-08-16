@@ -6,6 +6,8 @@ package com.example.diegomello.clickvalidationapp.utils;
 
 public class Constants {
 
+    public static final String BASE_URL ="http://caee3158.ngrok.io";
+
     public static String PATIENT_SHARED_PREF = "PATIENT_SHARED_PREF";
     public static String PATIENT_SHARED_PREF_JSON_OBJECT = "PATIENT_SHARED_PREF_JSON_OBJECT";
 

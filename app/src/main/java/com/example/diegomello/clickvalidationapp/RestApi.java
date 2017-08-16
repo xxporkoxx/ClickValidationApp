@@ -28,6 +28,7 @@ public interface RestApi {
     @POST("solvecall/")
     @FormUrlEncoded
     Call<Calling> putSolveCall(@Field("calltype") Integer calltype,
-                                 @Field("callstatus") Integer callstatus,
-                                 @Field("callid") String callId);
+                               @Field("callstatus") Integer callstatus,
+                               @Field("callid") String callId,
+                               @Field("patient_id") String patient_id);
 }

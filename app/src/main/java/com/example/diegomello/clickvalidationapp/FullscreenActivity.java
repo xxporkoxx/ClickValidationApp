@@ -241,7 +241,7 @@ public class FullscreenActivity extends AppCompatActivity {
                             public void onFailure(Call<Calling> call, Throwable t) {
 
                             }
-                        },callTypeInteger,callStatusInteger,call_id);
+                        },callTypeInteger,callStatusInteger,call_id,p.get_id());
                     }else{
 
                     }
