@@ -3,7 +3,9 @@ package com.example.diegomello.clickvalidationapp;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -158,6 +161,8 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         });
         findViewById(R.id.config_button).setOnTouchListener(mDelayHideTouchListener);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -179,6 +184,22 @@ public class FullscreenActivity extends AppCompatActivity {
         mEmergencyButton.getBackground().setColorFilter(0xFFF2372A, PorterDuff.Mode.MULTIPLY);
         mAssistenceButton.getBackground().setColorFilter(0xFFFFEB3B, PorterDuff.Mode.MULTIPLY);
         mThirstyButton.getBackground().setColorFilter(0xFF2196F3, PorterDuff.Mode.MULTIPLY);
+
+        //Suport colors for APi SDK16
+        if(Build.VERSION.SDK_INT == 16){
+            Drawable d = mBathroomButton.getBackground();
+            d.setColorFilter(0xFF4CAF50, PorterDuff.Mode.MULTIPLY);
+            mBathroomButton.setBackground(d);
+            d = mEmergencyButton.getBackground();
+            d.setColorFilter(0xFFF2372A, PorterDuff.Mode.MULTIPLY);
+            mEmergencyButton.setBackground(d);
+            d = mAssistenceButton.getBackground();
+            d.setColorFilter(0xFFFFEB3B, PorterDuff.Mode.MULTIPLY);
+            mAssistenceButton.setBackground(d);
+            d = mThirstyButton.getBackground();
+            d.setColorFilter(0xFF2196F3, PorterDuff.Mode.MULTIPLY);
+            mThirstyButton.setBackground(d);
+        }
 
         mEmergencyButton.setOnClickListener(new View.OnClickListener() {
             @Override
